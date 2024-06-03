@@ -2,10 +2,14 @@ from fastapi import FastAPI
 from my_first_api.schemas import User
 import json
 
+description = """
+Welcome to my-first-API tutorial!
+"""
+
 tags_metadata = [
     {
         "name": "root",
-        "description": "Welcome to my-first-API tutorial!",
+        "description": "Root, home route of the project",
     },
     {
         "name": "sale",
@@ -17,7 +21,15 @@ tags_metadata = [
     },
 ]
 
-app = FastAPI(title='my-first-API', openapi_tags=tags_metadata)
+app = FastAPI(
+    title='my-first-API', 
+    description=description,
+    summary='The strong made simple tutorial to your first API!',
+    contact={
+        "name": "PROENÇA, Marco",
+        "email": "contato.marcoproenca@gmail.com",
+    },
+    openapi_tags=tags_metadata)
 
 with open('sales.json', 'r') as arquivo:
     sales = json.load(arquivo)

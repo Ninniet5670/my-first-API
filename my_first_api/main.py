@@ -4,12 +4,16 @@ import json
 
 tags_metadata = [
     {
+        "name": "root",
+        "description": "Welcome to my-first-API tutorial!",
+    },
+    {
         "name": "sale",
-        "description": "Return sales prices. So _fancy_ they have their own docs.",
+        "description": "GET example with parameters. Return sales prices. So _fancy_ they have their own docs.",
     },
     {
         "name": "user",
-        "description": "Operations with users. The **login** logic is also here.",
+        "description": "POST example with body. A print with users.",
     },
 ]
 
@@ -19,7 +23,7 @@ with open('sales.json', 'r') as arquivo:
     sales = json.load(arquivo)
 
 
-@app.get('/')
+@app.get('/', tags=["root"])
 def root():
     return {'response': 'Hello, World! You may go to /docs ou /redoc to see further routes and test them'}
 
@@ -34,7 +38,7 @@ def user_page(user_info: User):
 
 if __name__ == '__main__':
     import uvicorn
-    
+
     with open('sales.json', 'w') as arquivo:
         json.dump(sales, arquivo)
 

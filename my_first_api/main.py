@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from my_first_api.schemas import User
+from my_first_api.schemas import Sale
 import json
 
 description = """
@@ -12,12 +12,20 @@ tags_metadata = [
         "description": "Root, home route of the project",
     },
     {
-        "name": "sale",
-        "description": "GET example with parameters. Return sales prices. So _fancy_ they have their own docs.",
+        "name": "view sale",
+        "description": "Return one sale information. 'So _fancy_ they have their own docs.'",
     },
     {
-        "name": "user",
-        "description": "POST example with body. A print with users.",
+        "name": "view all sales",
+        "description": "Return all sales prices inside the CRUD.",
+    },
+    {
+        "name": "sasalele",
+        "description": "A print with users from body parameter.",
+    },
+    {
+        "name": "create sale",
+        "description": "Add a sale object to the CRUD.",
     },
 ]
 
@@ -31,27 +39,43 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata)
 
-with open('sales.json', 'r') as arquivo:
-    sales = json.load(arquivo)
+with open('sales.json', 'r+') as arquivo:
+    sales:list[Sale] = [json.load(arquivo)]
 
 
 @app.get('/', tags=["root"])
 def root():
     return {'response': 'Hello, World! You may go to /docs ou /redoc to see further routes and test them'}
 
-@app.get('/sale/{sale_id}', tags=["sale"])
-def get_sale(sale_id: str):
+@app.get('/sale/{sale_id}', tags=["view sale"])
+def view_sale(sale_id: str):
     return sales[sale_id]
 
-@app.post('/user/', tags=["user"])
-def user_page(user_info: User):
-    return {'response': f'Hello, {user_info.username}, born in {user_info.birthday}'}
+@app.get('/sales', tags=["view all sales"])
+def view_sales():
+    return sales
+
+@app.post('/sasalele/', tags=["sasalele"])
+def another_view_sale(sale_info: Sale):
+    return {'response': f'You just bought {sale_info.quantity} {sale_info.item} for a full R${sale_info.unit_price}? Anyways heres your id: {sale_info.id}'}
+
+@app.post('/create_sale/', tags=["create sale"])
+def create_sale(sale_info: Sale):
+    sales.append(sale_info)
+    return sale_info
+
+# @app.put('/view_sale/', tags=["POSTzinho sale"])
+# def create_sale(sale_info: Sale):
+#     sales.append(sale_info)
+#     return sale_info
+
+# @app.delete('/view_sale/', tags=["POSTzinho sale"])
+# def create_sale(sale_info: Sale):
+#     sales.append(sale_info)
+#     return sale_info
 
 
 if __name__ == '__main__':
     import uvicorn
-
-    with open('sales.json', 'w') as arquivo:
-        json.dump(sales, arquivo)
 
     uvicorn.run('my_first_api.main:app', log_level='info', reload=True)

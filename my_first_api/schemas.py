@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel 
 
-class User(BaseModel):
-    username: str
-    birthday: int
-    
+class Sale(BaseModel):
+    id: int
+    item: str
+    unit_price: float
+    quantity: int

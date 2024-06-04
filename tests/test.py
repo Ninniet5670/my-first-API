@@ -1,6 +1,6 @@
 import json 
 
-with open('sales.json', 'wr') as arquivo:
+with open('sales.json', 'r+') as arquivo:
     sales = json.load(arquivo)
 
 print(sales)

@@ -29,11 +29,11 @@ tags_metadata = [
     },
     {
         "name": "update sale",
-        "description": "Add a sale object to the CRUD.",
+        "description": "Update a sale object to the CRUD.",
     },
     {
         "name": "delete sale",
-        "description": "Add a sale object to the CRUD.",
+        "description": "Delete a sale object to the CRUD.",
     },
 ]
 
@@ -48,7 +48,7 @@ app = FastAPI(
     openapi_tags=tags_metadata)
 
 with open('sales.json', 'r+') as arquivo:
-    sales = json.load(arquivo)
+    sales = json.load(arquivo)["items"]
 
 
 @app.get('/', tags=["root"])
@@ -60,7 +60,7 @@ def view_sale(sale_id: str):
     return sales[sale_id]
 
 @app.get('/sales', tags=["view all sales"])
-def view_sales():
+def view_all_sales():
     return sales
 
 @app.post('/sasalele/', tags=["sasalele"])
@@ -72,15 +72,15 @@ def create_sale(sale_info: Sale):
     sales.update(sale_info)
     return sale_info
 
-@app.put('/view_sale/', tags=["update sale"])
-def create_sale(sale_id:int, sale_info: Sale):
+@app.put('/update_sale/{sale_id}', tags=["update sale"])
+def update_sale(sale_id:int, sale_info: Sale):
     sales[sale_id] = sale_info
     return sale_info
 
-@app.delete('/view_sale/', tags=["delete sale"])
-def create_sale(sale_info: Sale):
-    sales.append(sale_info)
-    return sale_info
+@app.delete('/delete_sale/{sale_id}', tags=["delete sale"])
+def delete_sale(sale_id:str):
+    del sales[sale_id]
+    return {"item_id": sale_id}
 
 
 if __name__ == '__main__':

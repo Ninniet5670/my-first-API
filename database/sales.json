@@ -1,0 +1,8 @@
+{
+  "items": [
+    {"id": 1, "item": "lata", "unit_price": 4, "quantity": 5},
+    {"id": 2, "item": "garrafa 2L", "unit_price": 15, "quantity": 5},
+    {"id": 3, "item": "garrafa 750ml", "unit_price": 10, "quantity": 5},
+    {"id": 4, "item": "lata mini", "unit_price": 2, "quantity": 5}
+  ]
+}

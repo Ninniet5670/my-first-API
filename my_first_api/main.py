@@ -9,7 +9,7 @@ Welcome to my-first-API tutorial!
 tags_metadata = [
     {
         "name": "root",
-        "description": "Root, home route of the project",
+        "description": "Home route of the project",
     },
     {
         "name": "view sale",
@@ -47,7 +47,7 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata)
 
-with open('sales.json', 'r+') as arquivo:
+with open('database/sales.json', 'r+') as arquivo:
     sales = json.load(arquivo)["items"]
 
 
@@ -69,17 +69,22 @@ def another_view_sale(sale_info: Sale):
 
 @app.post('/create_sale/', tags=["create sale"])
 def create_sale(sale_info: Sale):
-    sales.update(sale_info)
+    sales.append(sale_info)
     return sale_info
 
 @app.put('/update_sale/{sale_id}', tags=["update sale"])
 def update_sale(sale_id:int, sale_info: Sale):
-    sales[sale_id] = sale_info
-    return sale_info
+    for i, j in enumerate(sales):
+        if j['id'] == sale_id:
+            sales[i] = sale_info
+    return {"item_id": sale_id}
 
 @app.delete('/delete_sale/{sale_id}', tags=["delete sale"])
-def delete_sale(sale_id:str):
-    del sales[sale_id]
+def delete_sale(sale_id:int):
+    for i, j in enumerate(sales):
+        if j['id'] == sale_id:
+            del sales[i]
+
     return {"item_id": sale_id}
 
 

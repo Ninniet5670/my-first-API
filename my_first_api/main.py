@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from my_first_api.schemas import Sale
 import json
 
@@ -77,15 +77,22 @@ def update_sale(sale_id:int, sale_info: Sale):
     for i, j in enumerate(sales):
         if j['id'] == sale_id:
             sales[i] = sale_info
-    return {"item_id": sale_id}
+            break
+    else:
+        raise HTTPException(status_code=404, detail='Not any sales with given ID')
+    
+    return {"response": f'Sale ID: {sale_id} updated successfully'}
 
 @app.delete('/delete_sale/{sale_id}', tags=["delete sale"])
 def delete_sale(sale_id:int):
     for i, j in enumerate(sales):
         if j['id'] == sale_id:
             del sales[i]
+            break
+    else:
+        raise HTTPException(status_code=404, detail='Not any sales with given ID')
 
-    return {"item_id": sale_id}
+    return {"response": f'Sale ID: {sale_id} deleted successfully'}
 
 
 if __name__ == '__main__':

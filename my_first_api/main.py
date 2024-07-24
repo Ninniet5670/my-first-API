@@ -47,7 +47,7 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata)
 
-with open('database/sales.json', 'r+') as arquivo:
+with open('data/sales.json', 'r+') as arquivo:
     sales = json.load(arquivo)["items"]
 
 
